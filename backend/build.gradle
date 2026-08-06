@@ -25,8 +25,12 @@ dependencies {
 	implementation 'org.liquibase:liquibase-core'
 	implementation 'org.springframework.boot:spring-boot-liquibase'
 	runtimeOnly 'org.xerial:sqlite-jdbc:3.53.2.1'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
