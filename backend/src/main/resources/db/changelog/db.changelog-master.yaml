@@ -1,4 +1,101 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/changes/0001-initial.yaml
-      relativeToChangelogFile: false
+  - changeSet:
+      id: 1-create-location-table
+      author: james.tsao
+      changes:
+        - createTable:
+            tableName: location
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: city
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: state
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: country
+                  type: text
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2-create-job-table
+      author: james.tsao
+      changes:
+        - createTable:
+            tableName: job
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: company
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: location_id
+                  type: int
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_job_location
+                    references: location(id)
+              - column:
+                  name: salary_value
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: salary_currency
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: employment_type
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: posting_date
+                  type: date
+                  constraints:
+                    nullable: true
+              - column:
+                  name: company_type
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: language
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: remote
+                  type: boolean
+                  constraints:
+                    nullable: false
