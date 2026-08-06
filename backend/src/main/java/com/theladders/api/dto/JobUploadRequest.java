@@ -1,5 +1,6 @@
 package com.theladders.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
 
@@ -11,9 +12,9 @@ public record JobUploadRequest(
         String company,
         JobLocationRequest location,
         JobSalaryRequest salary,
-        String employmentType,
-        LocalDate postingDate,
-        String companyType,
+        @JsonProperty("employment_type") String employmentType,
+        @JsonProperty("posting_date") LocalDate postingDate,
+        @JsonProperty("company_type") String companyType,
         String language,
         boolean remote
 ) {
