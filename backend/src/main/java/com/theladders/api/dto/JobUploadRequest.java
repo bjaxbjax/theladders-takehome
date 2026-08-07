@@ -6,6 +6,7 @@ import com.theladders.model.EmploymentType;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
 import com.theladders.model.SalaryPeriod;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.LocalDate;
 
@@ -14,7 +15,7 @@ public record JobUploadRequest(
         String description,
         String company,
         JobLocationRequest location,
-        JobSalaryRequest salary,
+        @JsonDeserialize(using = JobSalaryRequestDeserializer.class) JobSalaryRequest salary,
         @JsonProperty("employment_type") String employmentType,
         @JsonProperty("posting_date") LocalDate postingDate,
         @JsonProperty("company_type") String companyType,
