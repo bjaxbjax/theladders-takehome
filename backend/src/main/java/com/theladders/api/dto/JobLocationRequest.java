@@ -5,9 +5,4 @@ public record JobLocationRequest(
         String state,
         String country
 ) {
-    public JobLocationRequest {
-        if (country == null || country.isBlank()) {
-            throw new IllegalArgumentException("Country cannot be null or empty");
-        }
-    }
 }

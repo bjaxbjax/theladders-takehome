@@ -47,7 +47,7 @@ public class Job {
 
     private String language = "";
 
-    private boolean remote = false;
+    private Boolean remote = false;
 
     public Job(
             String title,
@@ -60,7 +60,28 @@ public class Job {
             LocalDate postingDate,
             String companyType,
             String language,
-            boolean remote) {
+            Boolean remote) {
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("title cannot be null or empty");
+        } else if (company == null || company.isEmpty()) {
+            throw new IllegalArgumentException("company cannot be null or empty");
+        } else if (location == null) {
+            throw new IllegalArgumentException("location cannot be null");
+        } else if (salaryValue == null) {
+            throw new IllegalArgumentException("salaryValue cannot be null");
+        } else if (salaryCurrency == null) {
+            throw new IllegalArgumentException("salaryCurrency cannot be null");
+        } else if (employmentType == null || employmentType.isEmpty()) {
+            throw new IllegalArgumentException("employmentType cannot be null or empty");
+        } else if (postingDate == null) {
+            throw new IllegalArgumentException("postingDate cannot be null");
+        } else if (companyType == null || companyType.isEmpty()) {
+            throw new IllegalArgumentException("companyType cannot be null or empty");
+        } else if (language == null || language.isEmpty()) {
+            throw new IllegalArgumentException("language cannot be null or empty");
+        } else if (remote == null) {
+            throw new IllegalArgumentException("remote cannot be null");
+        }
         this.title = title;
         this.description = description;
         this.company = company;

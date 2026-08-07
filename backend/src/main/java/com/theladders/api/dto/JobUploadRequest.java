@@ -16,36 +16,16 @@ public record JobUploadRequest(
         @JsonProperty("posting_date") LocalDate postingDate,
         @JsonProperty("company_type") String companyType,
         String language,
-        boolean remote
+        Boolean remote
 ) {
-    public JobUploadRequest {
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("title cannot be null or empty");
-        } else if(company == null || company.isEmpty()) {
-            throw new IllegalArgumentException("company cannot be null or empty");
-        } else if (location == null) {
-            throw new IllegalArgumentException("location cannot be null");
-        } else if (salary == null) {
-            throw new IllegalArgumentException("salary cannot be null");
-        } else if (employmentType == null || employmentType.isEmpty()) {
-            throw new IllegalArgumentException("employmentType cannot be null or empty");
-        } else if (postingDate == null) {
-            throw new IllegalArgumentException("postingDate cannot be null");
-        } else if (companyType == null || companyType.isEmpty()) {
-            throw new IllegalArgumentException("companyType cannot be null or empty");
-        } else if (language == null || language.isEmpty()) {
-            throw new IllegalArgumentException("language cannot be null or empty");
-        }
-    }
-
     public Job toEntity() {
         return new Job(
                 title,
                 description,
                 company,
-                new Location(location.city(), location.state(), location.country()),
-                salary.value(),
-                salary.currency(),
+                location == null ? null : new Location(location.city(), location.state(), location.country()),
+                salary == null ? null : salary.value(),
+                salary == null ? null : salary.currency(),
                 employmentType,
                 postingDate,
                 companyType,

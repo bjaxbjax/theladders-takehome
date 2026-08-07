@@ -27,6 +27,9 @@ public class Location {
     private String country = "";
 
     public Location(String city, String state, String country) {
+        if (country == null || country.isBlank()) {
+            throw new IllegalArgumentException("Country cannot be null or empty");
+        }
         this.city = city;
         this.state = state;
         this.country = country;
