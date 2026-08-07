@@ -46,7 +46,8 @@ public class Job {
 
     private LocalDate postingDate;
 
-    private String companyType = "";
+    @Enumerated(EnumType.STRING)
+    private CompanyType companyType;
 
     private String language = "";
 
@@ -61,7 +62,7 @@ public class Job {
             String salaryCurrency,
             EmploymentType employmentType,
             LocalDate postingDate,
-            String companyType,
+            CompanyType companyType,
             String language,
             Boolean remote) {
         if (title == null || title.isEmpty()) {
@@ -78,8 +79,8 @@ public class Job {
             throw new IllegalArgumentException("employmentType cannot be null");
         } else if (postingDate == null) {
             throw new IllegalArgumentException("postingDate cannot be null");
-        } else if (companyType == null || companyType.isEmpty()) {
-            throw new IllegalArgumentException("companyType cannot be null or empty");
+        } else if (companyType == null) {
+            throw new IllegalArgumentException("companyType cannot be null");
         } else if (language == null || language.isEmpty()) {
             throw new IllegalArgumentException("language cannot be null or empty");
         } else if (remote == null) {
