@@ -21,6 +21,20 @@ public record JobUploadRequest(
     public JobUploadRequest {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("title cannot be null or empty");
+        } else if(company == null || company.isEmpty()) {
+            throw new IllegalArgumentException("company cannot be null or empty");
+        } else if (location == null) {
+            throw new IllegalArgumentException("location cannot be null");
+        } else if (salary == null) {
+            throw new IllegalArgumentException("salary cannot be null");
+        } else if (employmentType == null || employmentType.isEmpty()) {
+            throw new IllegalArgumentException("employmentType cannot be null or empty");
+        } else if (postingDate == null) {
+            throw new IllegalArgumentException("postingDate cannot be null");
+        } else if (companyType == null || companyType.isEmpty()) {
+            throw new IllegalArgumentException("companyType cannot be null or empty");
+        } else if (language == null || language.isEmpty()) {
+            throw new IllegalArgumentException("language cannot be null or empty");
         }
     }
 
