@@ -15,6 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.theladders.service.ApprovalCriteria.CANADA_COUNTRY_NAMES;
+import static com.theladders.service.ApprovalCriteria.ENGLISH_NAMES;
+import static com.theladders.service.ApprovalCriteria.FRENCH_NAMES;
+import static com.theladders.service.ApprovalCriteria.MINIMUM_ANNUAL_SALARY_USD;
+import static com.theladders.service.ApprovalCriteria.MINIMUM_HOURLY_RATE_USD;
+import static com.theladders.service.ApprovalCriteria.US_COUNTRY_NAMES;
+
 @Service
 public class JobService {
     private final JobRepository jobRepository;
@@ -34,14 +41,6 @@ public class JobService {
         });
         return jobRepository.saveAll(jobs);
     }
-
-    private static final Set<String> US_COUNTRY_NAMES =
-            Set.of("us", "usa", "united states", "united states of america");
-    private static final Set<String> CANADA_COUNTRY_NAMES = Set.of("ca", "can", "canada");
-    private static final Set<String> ENGLISH_NAMES = Set.of("en", "eng", "english");
-    private static final Set<String> FRENCH_NAMES = Set.of("fr", "fre", "fra", "french");
-    private static final long MINIMUM_ANNUAL_SALARY_USD = 100000;
-    private static final long MINIMUM_HOURLY_RATE_USD = 45;
 
     private String approveOrRejectWithMessage(Job job) {
         if (!isEligibleLocation(job)) {
