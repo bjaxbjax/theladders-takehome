@@ -1,4 +1,4 @@
-package com.theladders.data;
+package com.theladders.storage;
 
 import com.theladders.model.Job;
 import org.springframework.data.repository.ListCrudRepository;

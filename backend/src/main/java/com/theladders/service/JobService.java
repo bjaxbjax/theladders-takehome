@@ -1,7 +1,7 @@
 package com.theladders.service;
 
-import com.theladders.data.JobRepository;
-import com.theladders.data.LocationRepository;
+import com.theladders.storage.JobRepository;
+import com.theladders.storage.LocationRepository;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
 import org.springframework.stereotype.Service;
