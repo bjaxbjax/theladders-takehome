@@ -14,7 +14,7 @@ public record JobUploadRequest(
         String title,
         String description,
         String company,
-        JobLocationRequest location,
+        @JsonDeserialize(using = JobLocationRequestDeserializer.class) JobLocationRequest location,
         @JsonDeserialize(using = JobSalaryRequestDeserializer.class) JobSalaryRequest salary,
         @JsonProperty("employment_type") String employmentType,
         @JsonProperty("posting_date") LocalDate postingDate,
