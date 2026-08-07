@@ -5,6 +5,7 @@ import com.theladders.model.CompanyType;
 import com.theladders.model.EmploymentType;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
+import com.theladders.model.SalaryPeriod;
 
 import java.time.LocalDate;
 
@@ -28,6 +29,7 @@ public record JobUploadRequest(
                 location == null ? null : new Location(location.city(), location.state(), location.country()),
                 salary == null ? null : salary.value(),
                 salary == null ? null : salary.currency(),
+                salary == null || salary.unit() == null ? SalaryPeriod.ANNUAL : SalaryPeriod.fromLabel(salary.unit()),
                 employmentType == null ? null : EmploymentType.fromLabel(employmentType),
                 postingDate,
                 companyType == null ? null : CompanyType.fromLabel(companyType),

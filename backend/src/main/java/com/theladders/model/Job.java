@@ -36,7 +36,6 @@ public class Job {
     @NonNull
     private String company = "";
 
-    @NonNull
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "location_id")
     private Location location;
@@ -46,6 +45,10 @@ public class Job {
 
     @NonNull
     private String salaryCurrency = "";
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private SalaryPeriod salaryPeriod;
 
     @NonNull
     @Enumerated(EnumType.STRING)
@@ -68,9 +71,10 @@ public class Job {
             @NonNull String title,
             String description,
             @NonNull String company,
-            @NonNull Location location,
+            Location location,
             @NonNull Long salaryValue,
             @NonNull String salaryCurrency,
+            @NonNull SalaryPeriod salaryPeriod,
             @NonNull EmploymentType employmentType,
             @NonNull LocalDate postingDate,
             @NonNull CompanyType companyType,
@@ -89,6 +93,7 @@ public class Job {
         this.location = location;
         this.salaryValue = salaryValue;
         this.salaryCurrency = salaryCurrency;
+        this.salaryPeriod = salaryPeriod;
         this.employmentType = employmentType;
         this.postingDate = postingDate;
         this.companyType = companyType;

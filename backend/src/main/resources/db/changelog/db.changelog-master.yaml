@@ -99,3 +99,15 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 3-add-salary-period-to-job
+      author: james.tsao
+      changes:
+        - addColumn:
+            tableName: job
+            columns:
+              - column:
+                  name: salary_period
+                  type: text
+                  constraints:
+                    nullable: true
