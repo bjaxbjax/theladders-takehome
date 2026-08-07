@@ -28,7 +28,10 @@ public class JobService {
     @Transactional
     public List<Job> ingest(List<Job> jobs) {
         Map<LocationKey, Location> resolvedLocations = new HashMap<>();
-        jobs.forEach(job -> resolveLocation(job, resolvedLocations));
+        jobs.forEach(job -> {
+            resolveLocation(job, resolvedLocations);
+            job.setRejectionReason(approveOrRejectWithMessage(job));
+        });
         return jobRepository.saveAll(jobs);
     }
 
@@ -40,12 +43,23 @@ public class JobService {
     private static final long MINIMUM_ANNUAL_SALARY_USD = 100000;
     private static final long MINIMUM_HOURLY_RATE_USD = 45;
 
-    private boolean approval(Job job) {
-        return isEligibleLocation(job)
-                && job.getEmploymentType() == EmploymentType.FULL_TIME
-                && isEligibleSalary(job)
-                && job.getCompanyType() != CompanyType.STAFFING_FIRM
-                && isEligibleLanguage(job);
+    private String approveOrRejectWithMessage(Job job) {
+        if (!isEligibleLocation(job)) {
+            return "Job must be remote or located in the United States or Canada";
+        }
+        if (job.getEmploymentType() != EmploymentType.FULL_TIME) {
+            return "Job must be a full-time position";
+        }
+        if (!isEligibleSalary(job)) {
+            return "Annual salary must be over $100,000 USD, or over $45/hour USD if paid hourly";
+        }
+        if (job.getCompanyType() == CompanyType.STAFFING_FIRM) {
+            return "Job must not be from a staffing firm";
+        }
+        if (!isEligibleLanguage(job)) {
+            return "Job description must be in English, or French if the job is in Canada";
+        }
+        return null;
     }
 
     private boolean isEligibleLocation(Job job) {
