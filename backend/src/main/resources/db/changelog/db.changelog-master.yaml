@@ -123,3 +123,31 @@ databaseChangeLog:
                   type: text
                   constraints:
                     nullable: true
+  - changeSet:
+      id: 5-add-indexes
+      author: james.tsao
+      changes:
+        - createIndex:
+            indexName: idx_job_title
+            tableName: job
+            columns:
+              - column:
+                  name: title
+        - createIndex:
+            indexName: idx_job_salary_value
+            tableName: job
+            columns:
+              - column:
+                  name: salary_value
+        - createIndex:
+            indexName: idx_job_posting_date
+            tableName: job
+            columns:
+              - column:
+                  name: posting_date
+        - createIndex:
+            indexName: idx_location_country
+            tableName: location
+            columns:
+              - column:
+                  name: country
