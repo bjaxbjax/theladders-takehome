@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -27,64 +28,60 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private String title = "";
 
     private String description;
 
+    @NonNull
     private String company = "";
 
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @NonNull
     private Long salaryValue = 0L;
 
+    @NonNull
     private String salaryCurrency = "";
 
+    @NonNull
     @Enumerated(EnumType.STRING)
     private EmploymentType employmentType;
 
+    @NonNull
     private LocalDate postingDate;
 
+    @NonNull
     @Enumerated(EnumType.STRING)
     private CompanyType companyType;
 
+    @NonNull
     private String language = "";
 
+    @NonNull
     private Boolean remote = false;
 
     public Job(
-            String title,
+            @NonNull String title,
             String description,
-            String company,
-            Location location,
-            Long salaryValue,
-            String salaryCurrency,
-            EmploymentType employmentType,
-            LocalDate postingDate,
-            CompanyType companyType,
-            String language,
-            Boolean remote) {
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("title cannot be null or empty");
-        } else if (company == null || company.isEmpty()) {
-            throw new IllegalArgumentException("company cannot be null or empty");
-        } else if (location == null) {
-            throw new IllegalArgumentException("location cannot be null");
-        } else if (salaryValue == null) {
-            throw new IllegalArgumentException("salaryValue cannot be null");
-        } else if (salaryCurrency == null) {
-            throw new IllegalArgumentException("salaryCurrency cannot be null");
-        } else if (employmentType == null) {
-            throw new IllegalArgumentException("employmentType cannot be null");
-        } else if (postingDate == null) {
-            throw new IllegalArgumentException("postingDate cannot be null");
-        } else if (companyType == null) {
-            throw new IllegalArgumentException("companyType cannot be null");
-        } else if (language == null || language.isEmpty()) {
-            throw new IllegalArgumentException("language cannot be null or empty");
-        } else if (remote == null) {
-            throw new IllegalArgumentException("remote cannot be null");
+            @NonNull String company,
+            @NonNull Location location,
+            @NonNull Long salaryValue,
+            @NonNull String salaryCurrency,
+            @NonNull EmploymentType employmentType,
+            @NonNull LocalDate postingDate,
+            @NonNull CompanyType companyType,
+            @NonNull String language,
+            @NonNull Boolean remote) {
+        if (title.isBlank()) {
+            throw new IllegalArgumentException("title cannot be blank");
+        } else if (company.isBlank()) {
+            throw new IllegalArgumentException("company cannot be blank");
+        } else if (language.isBlank()) {
+            throw new IllegalArgumentException("language cannot be blank");
         }
         this.title = title;
         this.description = description;

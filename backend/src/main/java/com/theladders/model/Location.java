@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -24,11 +25,12 @@ public class Location {
 
     private String state;
 
+    @NonNull
     private String country = "";
 
-    public Location(String city, String state, String country) {
-        if (country == null || country.isBlank()) {
-            throw new IllegalArgumentException("Country cannot be null or empty");
+    public Location(String city, String state, @NonNull String country) {
+        if (country.isBlank()) {
+            throw new IllegalArgumentException("country cannot be blank");
         }
         this.city = city;
         this.state = state;
