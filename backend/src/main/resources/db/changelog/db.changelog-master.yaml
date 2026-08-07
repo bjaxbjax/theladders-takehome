@@ -111,3 +111,15 @@ databaseChangeLog:
                   type: text
                   constraints:
                     nullable: true
+  - changeSet:
+      id: 4-add-rejection-reason-to-job
+      author: james.tsao
+      changes:
+        - addColumn:
+            tableName: job
+            columns:
+              - column:
+                  name: rejection_reason
+                  type: text
+                  constraints:
+                    nullable: true

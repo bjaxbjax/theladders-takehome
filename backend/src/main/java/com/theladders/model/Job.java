@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +67,13 @@ public class Job {
 
     @NonNull
     private Boolean remote = false;
+
+    private String rejectionReason;
+
+    @Transient
+    public boolean isApproved() {
+        return rejectionReason == null;
+    }
 
     public Job(
             @NonNull String title,
