@@ -1,6 +1,7 @@
 package com.theladders.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theladders.model.EmploymentType;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
 
@@ -26,7 +27,7 @@ public record JobUploadRequest(
                 location == null ? null : new Location(location.city(), location.state(), location.country()),
                 salary == null ? null : salary.value(),
                 salary == null ? null : salary.currency(),
-                employmentType,
+                employmentType == null ? null : EmploymentType.fromLabel(employmentType),
                 postingDate,
                 companyType,
                 language,

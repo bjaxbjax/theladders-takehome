@@ -2,6 +2,8 @@ package com.theladders.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,7 +41,8 @@ public class Job {
 
     private String salaryCurrency = "";
 
-    private String employmentType = "";
+    @Enumerated(EnumType.STRING)
+    private EmploymentType employmentType;
 
     private LocalDate postingDate;
 
@@ -56,7 +59,7 @@ public class Job {
             Location location,
             Long salaryValue,
             String salaryCurrency,
-            String employmentType,
+            EmploymentType employmentType,
             LocalDate postingDate,
             String companyType,
             String language,
@@ -71,8 +74,8 @@ public class Job {
             throw new IllegalArgumentException("salaryValue cannot be null");
         } else if (salaryCurrency == null) {
             throw new IllegalArgumentException("salaryCurrency cannot be null");
-        } else if (employmentType == null || employmentType.isEmpty()) {
-            throw new IllegalArgumentException("employmentType cannot be null or empty");
+        } else if (employmentType == null) {
+            throw new IllegalArgumentException("employmentType cannot be null");
         } else if (postingDate == null) {
             throw new IllegalArgumentException("postingDate cannot be null");
         } else if (companyType == null || companyType.isEmpty()) {

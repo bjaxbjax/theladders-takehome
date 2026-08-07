@@ -29,7 +29,7 @@ public class JobController {
         for (int i = 0; i < jobs.size(); i++) {
             try {
                 toIngest.add(jobs.get(i).toEntity());
-            } catch (RuntimeException e) {
+            } catch (Exception e) {
                 errorsByIndex.put(i, rootCauseMessage(e));
             }
         }
