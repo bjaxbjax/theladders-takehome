@@ -1,7 +1,5 @@
 package com.theladders.service;
 
-import java.util.Set;
-
 final class ApprovalCriteria {
     static final String COUNTRY_US = "USA";
     static final String COUNTRY_CA = "Canada";
