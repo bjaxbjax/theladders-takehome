@@ -7,6 +7,8 @@ import com.theladders.model.EmploymentType;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
 import com.theladders.model.SalaryPeriod;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,47 @@ public class JobService {
             job.setRejectionReason(approveOrRejectWithMessage(job));
         });
         return jobRepository.saveAll(jobs);
+    }
+
+    public List<Job> search(String title, String country, String sortBy, String sortDirection) {
+        Specification<Job> spec = Specification
+                .where(isApproved())
+                .and(titleContains(title))
+                .and(hasCountry(country));
+        return jobRepository.findAll(spec, sortFor(sortBy, sortDirection));
+    }
+
+    private Specification<Job> isApproved() {
+        return (root, query, cb) -> cb.isNull(root.get("rejectionReason"));
+    }
+
+    private Specification<Job> titleContains(String title) {
+        if (title == null || title.isBlank()) {
+            return Specification.unrestricted();
+        }
+        String pattern = "%" + title.trim().toLowerCase() + "%";
+        return (root, query, cb) -> cb.like(cb.lower(root.get("title")), pattern);
+    }
+
+    private Specification<Job> hasCountry(String country) {
+        if (country == null || country.isBlank()) {
+            return Specification.unrestricted();
+        }
+        String normalized = country.trim().toLowerCase();
+        return (root, query, cb) -> cb.equal(cb.lower(root.join("location").get("country")), normalized);
+    }
+
+    private Sort sortFor(String sortBy, String sortDirection) {
+        if (sortBy == null || sortBy.isBlank()) {
+            return Sort.unsorted();
+        }
+        String property = switch (sortBy) {
+            case "salary" -> "salaryValue";
+            case "postingDate" -> "postingDate";
+            default -> throw new IllegalArgumentException("Unsupported sort field: " + sortBy);
+        };
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortDirection) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return Sort.by(direction, property);
     }
 
     private String approveOrRejectWithMessage(Job job) {

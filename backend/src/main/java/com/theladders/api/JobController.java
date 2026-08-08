@@ -5,8 +5,10 @@ import com.theladders.api.dto.JobUploadResult;
 import com.theladders.model.Job;
 import com.theladders.service.JobService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -19,6 +21,15 @@ public class JobController {
 
     public JobController(JobService jobService) {
         this.jobService = jobService;
+    }
+
+    @GetMapping("/api/jobs")
+    ResponseEntity<List<Job>> getJobs(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        return ResponseEntity.ok(jobService.search(title, country, sortBy, sortDirection));
     }
 
     @PostMapping("/api/jobs/upload")
