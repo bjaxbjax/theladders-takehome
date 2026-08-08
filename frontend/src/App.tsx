@@ -25,7 +25,6 @@ export default function App() {
   useEffect(() => {
     if (!hasSearched) return
 
-    let cancelled = false
     setStatus('Loading…')
 
     fetchJobs({
@@ -36,22 +35,16 @@ export default function App() {
       page,
     })
       .then((data) => {
-        if (cancelled) return
         setJobs(data.content)
         setTotalPages(data.totalPages)
         setStatus(formatStatus(data.number, data.size, data.totalElements, data.content.length))
       })
       .catch((err) => {
-        if (cancelled) return
         setStatus('Something went wrong loading jobs. Please try again.')
         setJobs([])
         setTotalPages(0)
         console.error(err)
       })
-
-    return () => {
-      cancelled = true
-    }
   }, [hasSearched, committedTitle, country, sortBy, sortDirection, page])
 
   function handleSubmit(event: FormEvent) {
