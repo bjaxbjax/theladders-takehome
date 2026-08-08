@@ -1,4 +1,4 @@
-import type { Job } from './api.ts'
+import type { Job } from '../api.ts'
 
 function formatLocation(location: Job['location']): string {
   return [location.city, location.state, location.country].filter(Boolean).join(', ')

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { fetchJobs, type Job, type SortBy, type SortDirection } from './api.ts'
-import { JobCard } from './JobCard.tsx'
+import { JobCard } from './components/JobCard.tsx'
 
 function formatStatus(count: number): string {
   return count === 0 ? 'No jobs found.' : `${count} job${count === 1 ? '' : 's'} found.`
