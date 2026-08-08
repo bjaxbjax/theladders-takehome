@@ -16,13 +16,11 @@ export default function App() {
   const [sortBy, setSortBy] = useState<SortBy | ''>('')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
 
-  const [countries, setCountries] = useState<string[]>([])
   const [jobs, setJobs] = useState<Job[]>([])
   const [page, setPage] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [status, setStatus] = useState('Search for jobs to get started.')
   const [hasSearched, setHasSearched] = useState(false)
-  const hasLoadedOnce = useRef(false)
 
   useEffect(() => {
     if (!hasSearched) return
@@ -39,25 +37,13 @@ export default function App() {
     })
       .then((data) => {
         if (cancelled) return
-        hasLoadedOnce.current = true
         setJobs(data.content)
         setTotalPages(data.totalPages)
         setStatus(formatStatus(data.number, data.size, data.totalElements, data.content.length))
-        setCountries((prev) =>
-          prev.length > 0
-            ? prev
-            : Array.from(new Set(data.content.map((job) => job.location.country))).sort((a, b) =>
-                a.localeCompare(b),
-              ),
-        )
       })
       .catch((err) => {
         if (cancelled) return
-        setStatus(
-          hasLoadedOnce.current
-            ? 'Something went wrong loading jobs. Please try again.'
-            : 'Could not reach the jobs API. Is the backend running on localhost:8080?',
-        )
+        setStatus('Something went wrong loading jobs. Please try again.')
         setJobs([])
         setTotalPages(0)
         console.error(err)
@@ -122,11 +108,8 @@ export default function App() {
             }}
           >
             <option value="">All countries</option>
-            {countries.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
+              <option key="USA" value="USA">USA</option>
+              <option key="Canada" value="Canada">Canada</option>
           </select>
         </div>
 
