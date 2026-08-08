@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { fetchJobs, type Job, type SortBy, type SortDirection } from './api.ts'
 import { JobCard } from './components/JobCard.tsx'
 
