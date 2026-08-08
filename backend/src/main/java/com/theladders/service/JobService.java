@@ -7,6 +7,9 @@ import com.theladders.model.EmploymentType;
 import com.theladders.model.Job;
 import com.theladders.model.Location;
 import com.theladders.model.SalaryPeriod;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -39,12 +42,13 @@ public class JobService {
         return jobRepository.saveAll(jobs);
     }
 
-    public List<Job> search(String title, String country, String sortBy, String sortDirection) {
+    public Page<Job> search(String title, String country, String sortBy, String sortDirection, int page, int size) {
         Specification<Job> spec = Specification
                 .where(isApproved())
                 .and(titleContains(title))
                 .and(hasCountry(country));
-        return jobRepository.findAll(spec, sortFor(sortBy, sortDirection));
+        Pageable pageable = PageRequest.of(page, size, sortFor(sortBy, sortDirection));
+        return jobRepository.findAll(spec, pageable);
     }
 
     private Specification<Job> isApproved() {

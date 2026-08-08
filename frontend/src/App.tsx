@@ -2,8 +2,11 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { fetchJobs, type Job, type SortBy, type SortDirection } from './api.ts'
 import { JobCard } from './components/JobCard.tsx'
 
-function formatStatus(count: number): string {
-  return count === 0 ? 'No jobs found.' : `${count} job${count === 1 ? '' : 's'} found.`
+function formatStatus(page: number, size: number, totalElements: number, pageCount: number): string {
+  if (totalElements === 0) return 'No jobs found.'
+  const start = page * size + 1
+  const end = page * size + pageCount
+  return `Displaying ${start}-${end} of ${totalElements} job${totalElements === 1 ? '' : 's'}.`
 }
 
 export default function App() {
@@ -15,6 +18,8 @@ export default function App() {
 
   const [countries, setCountries] = useState<string[]>([])
   const [jobs, setJobs] = useState<Job[]>([])
+  const [page, setPage] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
   const [status, setStatus] = useState('Search for jobs to get started.')
   const [hasSearched, setHasSearched] = useState(false)
   const hasLoadedOnce = useRef(false)
@@ -30,16 +35,20 @@ export default function App() {
       country: country || undefined,
       sortBy: sortBy || undefined,
       sortDirection,
+      page,
     })
       .then((data) => {
         if (cancelled) return
         hasLoadedOnce.current = true
-        setJobs(data)
-        setStatus(formatStatus(data.length))
+        setJobs(data.content)
+        setTotalPages(data.totalPages)
+        setStatus(formatStatus(data.number, data.size, data.totalElements, data.content.length))
         setCountries((prev) =>
           prev.length > 0
             ? prev
-            : Array.from(new Set(data.map((job) => job.location.country))).sort((a, b) => a.localeCompare(b)),
+            : Array.from(new Set(data.content.map((job) => job.location.country))).sort((a, b) =>
+                a.localeCompare(b),
+              ),
         )
       })
       .catch((err) => {
@@ -50,17 +59,19 @@ export default function App() {
             : 'Could not reach the jobs API. Is the backend running on localhost:8080?',
         )
         setJobs([])
+        setTotalPages(0)
         console.error(err)
       })
 
     return () => {
       cancelled = true
     }
-  }, [hasSearched, committedTitle, country, sortBy, sortDirection])
+  }, [hasSearched, committedTitle, country, sortBy, sortDirection, page])
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     setCommittedTitle(title.trim())
+    setPage(0)
     setHasSearched(true)
   }
 
@@ -70,6 +81,8 @@ export default function App() {
     setCountry('')
     setSortBy('')
     setSortDirection('asc')
+    setPage(0)
+    setTotalPages(0)
     setHasSearched(false)
     setJobs([])
     setStatus('Search for jobs to get started.')
@@ -104,6 +117,7 @@ export default function App() {
             value={country}
             onChange={(event) => {
               setCountry(event.target.value)
+              setPage(0)
               setHasSearched(true)
             }}
           >
@@ -123,6 +137,7 @@ export default function App() {
             value={sortBy}
             onChange={(event) => {
               setSortBy(event.target.value as SortBy | '')
+              setPage(0)
               setHasSearched(true)
             }}
           >
@@ -139,6 +154,7 @@ export default function App() {
             value={sortDirection}
             onChange={(event) => {
               setSortDirection(event.target.value as SortDirection)
+              setPage(0)
               setHasSearched(true)
             }}
           >
@@ -164,6 +180,20 @@ export default function App() {
           <JobCard key={job.id} job={job} />
         ))}
       </ul>
+
+      {hasSearched && totalPages > 1 && (
+        <div className="pagination">
+          <button type="button" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
+            Previous
+          </button>
+          <span>
+            Page {page + 1} of {totalPages}
+          </span>
+          <button type="button" disabled={page + 1 >= totalPages} onClick={() => setPage((p) => p + 1)}>
+            Next
+          </button>
+        </div>
+      )}
     </>
   )
 }

@@ -35,14 +35,28 @@ export interface JobSearchParams {
   country?: string
   sortBy?: SortBy
   sortDirection?: SortDirection
+  page?: number
+  size?: number
 }
 
-export async function fetchJobs(params: JobSearchParams = {}): Promise<Job[]> {
+export interface Page<T> {
+  content: T[]
+  totalElements: number
+  totalPages: number
+  number: number
+  size: number
+  first: boolean
+  last: boolean
+}
+
+export async function fetchJobs(params: JobSearchParams = {}): Promise<Page<Job>> {
   const query = new URLSearchParams()
   if (params.title) query.set('title', params.title)
   if (params.country) query.set('country', params.country)
   if (params.sortBy) query.set('sortBy', params.sortBy)
   if (params.sortBy && params.sortDirection) query.set('sortDirection', params.sortDirection)
+  if (params.page !== undefined) query.set('page', String(params.page))
+  if (params.size !== undefined) query.set('size', String(params.size))
 
   const queryString = query.toString()
   const response = await fetch(`/api/jobs${queryString ? `?${queryString}` : ''}`)

@@ -4,6 +4,7 @@ import com.theladders.api.dto.JobUploadRequest;
 import com.theladders.api.dto.JobUploadResult;
 import com.theladders.model.Job;
 import com.theladders.service.JobService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +25,14 @@ public class JobController {
     }
 
     @GetMapping("/api/jobs")
-    ResponseEntity<List<Job>> getJobs(
+    ResponseEntity<Page<Job>> getJobs(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String country,
             @RequestParam(required = false) String sortBy,
-            @RequestParam(required = false) String sortDirection) {
-        return ResponseEntity.ok(jobService.search(title, country, sortBy, sortDirection));
+            @RequestParam(required = false) String sortDirection,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
+        return ResponseEntity.ok(jobService.search(title, country, sortBy, sortDirection, page, size));
     }
 
     @PostMapping("/api/jobs/upload")
