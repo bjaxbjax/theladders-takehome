@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1-create-location-table
+      id: 1-create-schema
       author: james.tsao
       changes:
         - createTable:
@@ -28,10 +28,6 @@ databaseChangeLog:
                   type: text
                   constraints:
                     nullable: false
-  - changeSet:
-      id: 2-create-job-table
-      author: james.tsao
-      changes:
         - createTable:
             tableName: job
             columns:
@@ -66,7 +62,7 @@ databaseChangeLog:
                     references: location(id)
               - column:
                   name: salary_value
-                  type: bigint
+                  type: decimal(19,2)
                   constraints:
                     nullable: false
               - column:
@@ -74,6 +70,11 @@ databaseChangeLog:
                   type: text
                   constraints:
                     nullable: false
+              - column:
+                  name: salary_period
+                  type: text
+                  constraints:
+                    nullable: true
               - column:
                   name: employment_type
                   type: text
@@ -99,34 +100,11 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
-  - changeSet:
-      id: 3-add-salary-period-to-job
-      author: james.tsao
-      changes:
-        - addColumn:
-            tableName: job
-            columns:
-              - column:
-                  name: salary_period
-                  type: text
-                  constraints:
-                    nullable: true
-  - changeSet:
-      id: 4-add-rejection-reason-to-job
-      author: james.tsao
-      changes:
-        - addColumn:
-            tableName: job
-            columns:
               - column:
                   name: rejection_reason
                   type: text
                   constraints:
                     nullable: true
-  - changeSet:
-      id: 5-add-indexes
-      author: james.tsao
-      changes:
         - createIndex:
             indexName: idx_job_title
             tableName: job
@@ -151,47 +129,3 @@ databaseChangeLog:
             columns:
               - column:
                   name: country
-  - changeSet:
-      id: 6-change-salary-value-to-decimal
-      author: james.tsao
-      changes:
-        - sql:
-            sql: >
-              CREATE TABLE job_new (
-                id INTEGER CONSTRAINT PK_JOB PRIMARY KEY AUTOINCREMENT NOT NULL,
-                title TEXT NOT NULL,
-                description TEXT,
-                company TEXT NOT NULL,
-                location_id INTEGER,
-                salary_value DECIMAL(19,2) NOT NULL,
-                salary_currency TEXT NOT NULL,
-                employment_type TEXT NOT NULL,
-                posting_date date,
-                company_type TEXT NOT NULL,
-                language TEXT NOT NULL,
-                remote BOOLEAN NOT NULL,
-                salary_period TEXT,
-                rejection_reason TEXT,
-                CONSTRAINT fk_job_location FOREIGN KEY (location_id) REFERENCES location(id)
-              );
-              INSERT INTO job_new SELECT id, title, description, company, location_id, salary_value, salary_currency, employment_type, posting_date, company_type, language, remote, salary_period, rejection_reason FROM job;
-              DROP TABLE job;
-              ALTER TABLE job_new RENAME TO job;
-        - createIndex:
-            indexName: idx_job_title
-            tableName: job
-            columns:
-              - column:
-                  name: title
-        - createIndex:
-            indexName: idx_job_salary_value
-            tableName: job
-            columns:
-              - column:
-                  name: salary_value
-        - createIndex:
-            indexName: idx_job_posting_date
-            tableName: job
-            columns:
-              - column:
-                  name: posting_date
