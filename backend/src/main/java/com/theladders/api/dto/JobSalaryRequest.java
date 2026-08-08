@@ -1,7 +1,9 @@
 package com.theladders.api.dto;
 
+import java.math.BigDecimal;
+
 public record JobSalaryRequest(
-        Long value,
+        BigDecimal value,
         String currency,
         String unit
 ) {

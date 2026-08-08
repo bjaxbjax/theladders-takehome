@@ -112,9 +112,9 @@ public class JobService {
             return false;
         }
         if (job.getSalaryPeriod() == SalaryPeriod.HOURLY) {
-            return job.getSalaryValue() > MINIMUM_HOURLY_RATE_USD;
+            return job.getSalaryValue().compareTo(MINIMUM_HOURLY_RATE_USD) > 0;
         }
-        return job.getSalaryValue() > MINIMUM_ANNUAL_SALARY_USD;
+        return job.getSalaryValue().compareTo(MINIMUM_ANNUAL_SALARY_USD) > 0;
     }
 
     private boolean isEligibleLanguage(Job job) {

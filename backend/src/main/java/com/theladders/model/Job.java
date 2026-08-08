@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +43,7 @@ public class Job {
     private Location location;
 
     @NonNull
-    private Long salaryValue = 0L;
+    private BigDecimal salaryValue = BigDecimal.ZERO;
 
     @NonNull
     private String salaryCurrency = "";
@@ -80,7 +81,7 @@ public class Job {
             String description,
             @NonNull String company,
             Location location,
-            @NonNull Long salaryValue,
+            @NonNull BigDecimal salaryValue,
             @NonNull String salaryCurrency,
             @NonNull SalaryPeriod salaryPeriod,
             @NonNull EmploymentType employmentType,
