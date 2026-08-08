@@ -189,3 +189,72 @@ button[type='submit'] {
     grid-template-columns: 1fr;
   }
 }
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+textarea {
+  font: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  resize: vertical;
+}
+
+.upload-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.upload-result {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+}
+
+.upload-result-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.upload-result-error .upload-result-badge {
+  color: #c0392b;
+}
+
+.upload-result-badge-unapproved {
+  color: #c0392b;
+}
+
+.upload-result-title {
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.upload-result-message {
+  font-size: 13px;
+  color: #c0392b;
+}

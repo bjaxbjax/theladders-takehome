@@ -79,7 +79,9 @@ export default function App() {
     <>
       <header className="page-header">
         <h1>Job Search</h1>
-        <p>Search open roles from the jobs board.</p>
+        <p>
+          Search open roles from the jobs board. <a href="/pages/admin/admin.html">Admin: upload jobs</a>
+        </p>
       </header>
 
       <form className="search-form" onSubmit={handleSubmit}>
@@ -124,7 +126,7 @@ export default function App() {
               setHasSearched(true)
             }}
           >
-            <option value="">Relevance</option>
+            <option value="">None</option>
             <option value="salary">Salary</option>
             <option value="postingDate">Posting date</option>
           </select>

@@ -23,6 +23,8 @@ export interface Job {
   companyType: CompanyType
   language: string
   remote: boolean
+  approved: boolean
+  rejectionReason: string | null
 }
 
 export type SortBy = 'salary' | 'postingDate'
@@ -47,6 +49,39 @@ export async function fetchJobs(params: JobSearchParams = {}): Promise<Job[]> {
 
   if (!response.ok) {
     throw new Error(`Failed to fetch jobs: ${response.status} ${response.statusText}`)
+  }
+
+  return response.json()
+}
+
+export interface JobUploadRequest {
+  title: string
+  description?: string | null
+  company: string
+  location: { city?: string | null; state?: string | null; country: string } | string
+  salary: { value: number; currency: string; unit?: SalaryPeriod } | number
+  employment_type: EmploymentType
+  posting_date: string
+  company_type: CompanyType
+  language?: string | null
+  remote?: boolean
+}
+
+export interface JobUploadResult {
+  result: 'success' | 'error'
+  job: JobUploadRequest | Job
+  error: string | null
+}
+
+export async function uploadJobs(jobs: JobUploadRequest[]): Promise<JobUploadResult[]> {
+  const response = await fetch('/api/jobs/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(jobs),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to upload jobs: ${response.status} ${response.statusText}`)
   }
 
   return response.json()
