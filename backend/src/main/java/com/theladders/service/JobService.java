@@ -147,6 +147,10 @@ public class JobService {
                     .findByCityAndStateAndCountry(k.city(), k.state(), k.country());
             return existing.isEmpty() ? location : existing.getFirst();
         });
+        if (resolved.getCountry().equalsIgnoreCase("remote")) {
+            resolved = null;
+            job.setRemote(true);
+        }
         job.setLocation(resolved);
     }
 
