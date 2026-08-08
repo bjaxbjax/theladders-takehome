@@ -15,10 +15,13 @@ export default function App() {
 
   const [countries, setCountries] = useState<string[]>([])
   const [jobs, setJobs] = useState<Job[]>([])
-  const [status, setStatus] = useState('Loading…')
+  const [status, setStatus] = useState('Search for jobs to get started.')
+  const [hasSearched, setHasSearched] = useState(false)
   const hasLoadedOnce = useRef(false)
 
   useEffect(() => {
+    if (!hasSearched) return
+
     let cancelled = false
     setStatus('Loading…')
 
@@ -53,11 +56,12 @@ export default function App() {
     return () => {
       cancelled = true
     }
-  }, [committedTitle, country, sortBy, sortDirection])
+  }, [hasSearched, committedTitle, country, sortBy, sortDirection])
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     setCommittedTitle(title.trim())
+    setHasSearched(true)
   }
 
   function handleReset() {
@@ -66,6 +70,9 @@ export default function App() {
     setCountry('')
     setSortBy('')
     setSortDirection('asc')
+    setHasSearched(false)
+    setJobs([])
+    setStatus('Search for jobs to get started.')
   }
 
   return (
@@ -90,7 +97,14 @@ export default function App() {
 
         <div className="field">
           <label htmlFor="country-select">Country</label>
-          <select id="country-select" value={country} onChange={(event) => setCountry(event.target.value)}>
+          <select
+            id="country-select"
+            value={country}
+            onChange={(event) => {
+              setCountry(event.target.value)
+              setHasSearched(true)
+            }}
+          >
             <option value="">All countries</option>
             {countries.map((c) => (
               <option key={c} value={c}>
@@ -105,7 +119,10 @@ export default function App() {
           <select
             id="sort-by-select"
             value={sortBy}
-            onChange={(event) => setSortBy(event.target.value as SortBy | '')}
+            onChange={(event) => {
+              setSortBy(event.target.value as SortBy | '')
+              setHasSearched(true)
+            }}
           >
             <option value="">Relevance</option>
             <option value="salary">Salary</option>
@@ -118,7 +135,10 @@ export default function App() {
           <select
             id="sort-direction-select"
             value={sortDirection}
-            onChange={(event) => setSortDirection(event.target.value as SortDirection)}
+            onChange={(event) => {
+              setSortDirection(event.target.value as SortDirection)
+              setHasSearched(true)
+            }}
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
