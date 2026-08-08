@@ -17,12 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.theladders.service.ApprovalCriteria.CANADA_COUNTRY_NAMES;
-import static com.theladders.service.ApprovalCriteria.ENGLISH_NAMES;
-import static com.theladders.service.ApprovalCriteria.FRENCH_NAMES;
-import static com.theladders.service.ApprovalCriteria.MINIMUM_ANNUAL_SALARY_USD;
-import static com.theladders.service.ApprovalCriteria.MINIMUM_HOURLY_RATE_USD;
-import static com.theladders.service.ApprovalCriteria.US_COUNTRY_NAMES;
+import static com.theladders.service.ApprovalCriteria.*;
 
 @Service
 public class JobService {
@@ -108,7 +103,8 @@ public class JobService {
         if (job.getRemote()) {
             return true;
         }
-        return isCountry(job.getLocation(), US_COUNTRY_NAMES) || isCountry(job.getLocation(), CANADA_COUNTRY_NAMES);
+        String country = job.getLocation().getCountry();
+        return country.equals(COUNTRY_US) || country.equals(COUNTRY_CA);
     }
 
     private boolean isEligibleSalary(Job job) {
@@ -122,14 +118,11 @@ public class JobService {
     }
 
     private boolean isEligibleLanguage(Job job) {
-        if (matches(job.getLanguage(), ENGLISH_NAMES)) {
+        String language =  job.getLanguage();
+        if (language.equals(LANGUAGE_EN)) {
             return true;
         }
-        return isCountry(job.getLocation(), CANADA_COUNTRY_NAMES) && matches(job.getLanguage(), FRENCH_NAMES);
-    }
-
-    private boolean isCountry(Location location, Set<String> countryNames) {
-        return location != null && matches(location.getCountry(), countryNames);
+        return job.getLocation().getCountry().equals(COUNTRY_CA) && job.getLanguage().equals(LANGUAGE_FR);
     }
 
     private boolean matches(String value, Set<String> names) {
