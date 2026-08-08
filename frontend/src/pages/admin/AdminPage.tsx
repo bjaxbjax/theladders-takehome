@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { uploadJobs, type Job, type JobUploadResult } from '../../src/api.ts'
+import { uploadJobs, type Job, type JobUploadResult } from '../../api.ts'
 
 function savedJobOf(result: JobUploadResult): Job | null {
   return result.result === 'success' && 'id' in result.job ? result.job : null

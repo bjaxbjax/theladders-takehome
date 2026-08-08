@@ -80,7 +80,7 @@ export default function App() {
       <header className="page-header">
         <h1>Job Search</h1>
         <p>
-          Search open roles from the jobs board. <a href="/pages/admin/admin.html">Admin: upload jobs</a>
+          Search open roles from the jobs board. <a href="/admin">Admin: upload jobs</a>
         </p>
       </header>
 
