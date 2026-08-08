@@ -95,6 +95,8 @@ public class Job {
             throw new IllegalArgumentException("company cannot be blank");
         } else if (language.isBlank()) {
             throw new IllegalArgumentException("language cannot be blank");
+        } else if (salaryValue.stripTrailingZeros().scale() > 2) {
+            throw new IllegalArgumentException("salaryValue must have no more than 2 decimal places");
         }
         this.title = title;
         this.description = description;
